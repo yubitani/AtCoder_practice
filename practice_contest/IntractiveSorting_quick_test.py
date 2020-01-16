@@ -1,10 +1,11 @@
+import random
+
+
 class quick_sorter:
 
-    def __init__(self, query_ctr):
-        """
-        :param query_ctr: a number of times you can submit query
-        """
-        self.query_ctr = query_ctr
+    def __init__(self):
+
+        self.query_ctr = 0
 
     def quick_sort(self, lst):
         """
@@ -24,16 +25,13 @@ class quick_sorter:
         while lst:
             e = lst.pop()
 
-            print("? {} {}".format(pivot, e), flush=True)
-            self.query_ctr -= 1
 
-            if input() == ">":
+            if e < pivot:
                 left.append(e)
             else:
                 right.append(e)
 
-            if self.query_ctr <= 0:
-                raise
+            self.query_ctr += 1
 
         #再帰処理によるソート
         self.quick_sort(left)
@@ -51,16 +49,13 @@ class quick_sorter:
 
 # ボール数、クエリ数を取得
 
-N, Q = map(int, input().split(" "))
+N = int(input())
 
 # ソート対象のボールのリスト
 balls = [chr(i) for i in range(65, 65 + N)]
+random.shuffle(balls)
 
-try:
-    q = quick_sorter(Q)
-    q.quick_sort(balls)
-    print("! {}".format("".join(balls)), flush=True)
-
-#
-except RuntimeError:
-    print("Query_ctr exceeded the limit.")
+q = quick_sorter()
+q.quick_sort(balls)
+print("! {}".format("".join(balls)), flush=True)
+print(q.query_ctr)
